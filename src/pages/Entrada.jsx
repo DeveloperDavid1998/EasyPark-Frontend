@@ -27,6 +27,11 @@ function Entrada({ usuario }) {
     setLoading(false);
   };
 
+  const formatFechaHora = (fecha) => {
+    const d = new Date(fecha);
+    return d.toLocaleString('es-CO', { dateStyle: 'short', timeStyle: 'short' });
+  };
+
   return (
     <div className="max-w-2xl">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Registrar Entrada</h1>
@@ -59,14 +64,38 @@ function Entrada({ usuario }) {
 
       {resultado && (
         <div className="mt-4 bg-emerald-50 border border-emerald-200 rounded-xl p-6">
-          <h3 className="font-bold text-emerald-800 text-lg mb-3">Entrada registrada</h3>
+          <h3 className="font-bold text-emerald-800 text-lg mb-3">Entrada Registrada</h3>
           <div className="grid grid-cols-2 gap-2 text-sm">
-            <p className="text-gray-600">Tiquete:</p><p className="font-mono font-bold text-lg">{resultado.tiquete}</p>
-            <p className="text-gray-600">Placa:</p><p className="font-bold">{resultado.vehiculo.placa}</p>
-            <p className="text-gray-600">Tipo:</p><p className="capitalize">{resultado.vehiculo.tipo}</p>
-            <p className="text-gray-600">Espacio:</p><p>{resultado.espacio.numero} - {resultado.espacio.zona}</p>
-            <p className="text-gray-600">Abonado:</p><p>{resultado.es_abonado ? 'Si' : 'No'}</p>
+            <p className="text-gray-600">Tiquete:</p>
+            <p className="font-mono font-bold text-lg">{resultado.tiquete}</p>
+            <p className="text-gray-600">Placa:</p>
+            <p className="font-bold">{resultado.vehiculo.placa}</p>
+            <p className="text-gray-600">Tipo:</p>
+            <p className="capitalize">{resultado.vehiculo.tipo}</p>
+            <p className="text-gray-600">Espacio:</p>
+            <p>{resultado.espacio.numero} - {resultado.espacio.zona}</p>
+            <p className="text-gray-600">Hora de ingreso:</p>
+            <p className="font-medium">{formatFechaHora(resultado.entrada)}</p>
           </div>
+
+          {resultado.es_abonado ? (
+            <div className="mt-3 bg-blue-100 border border-blue-300 rounded-lg p-3">
+              <p className="text-blue-800 font-bold text-center">CLIENTE ABONADO</p>
+              <p className="text-blue-700 text-sm text-center">Sin cobro al momento de la salida</p>
+            </div>
+          ) : (
+            <div className="mt-3 bg-gray-50 rounded-lg p-3">
+              <p className="text-sm font-medium text-gray-700 mb-1">Tarifas aplicables:</p>
+              <div className="flex gap-4 text-sm">
+                {resultado.tarifas?.fraccion && (
+                  <p>Por hora: <span className="font-bold">${resultado.tarifas.fraccion.toLocaleString()}</span></p>
+                )}
+                {resultado.tarifas?.plena && (
+                  <p>Dia completo: <span className="font-bold">${resultado.tarifas.plena.toLocaleString()}</span></p>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

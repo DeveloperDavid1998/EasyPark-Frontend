@@ -28,6 +28,13 @@ function Dashboard() {
     }
   };
 
+  const formatFechaHora = (fecha) => {
+    const d = new Date(fecha);
+    const dia = d.toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const hora = d.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+    return `${dia} - ${hora}`;
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h1>
@@ -82,6 +89,7 @@ function Dashboard() {
                 <th className="text-left p-3">Placa</th>
                 <th className="text-left p-3">Tipo</th>
                 <th className="text-left p-3">Espacio</th>
+                <th className="text-left p-3">Fecha - Hora - Ingreso</th>
                 <th className="text-left p-3">Tiempo</th>
               </tr>
             </thead>
@@ -90,13 +98,14 @@ function Dashboard() {
                 <tr key={r.registro_id} className="border-t hover:bg-gray-50">
                   <td className="p-3 font-mono font-medium">{r.tiquete}</td>
                   <td className="p-3 font-bold">{r.placa}</td>
-                  <td className="p-3">{r.tipo}</td>
+                  <td className="p-3 capitalize">{r.tipo}</td>
                   <td className="p-3">{r.espacio} - {r.zona}</td>
-                  <td className="p-3">{r.tiempo}</td>
+                  <td className="p-3 text-gray-700">{formatFechaHora(r.entrada)}</td>
+                  <td className="p-3 font-medium">{r.tiempo}</td>
                 </tr>
               ))}
               {activos.length === 0 && (
-                <tr><td colSpan="5" className="p-8 text-center text-gray-400">No hay vehiculos estacionados</td></tr>
+                <tr><td colSpan="6" className="p-8 text-center text-gray-400">No hay vehiculos estacionados</td></tr>
               )}
             </tbody>
           </table>

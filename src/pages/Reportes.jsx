@@ -165,7 +165,8 @@ function Reportes() {
             <table className="w-full text-sm">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="text-left p-3">Fecha</th>
+                  <th className="text-left p-3">Fecha - Hora - Ingreso</th>
+                  <th className="text-left p-3">Fecha - Hora - Salida</th>
                   <th className="text-right p-3">Transacciones</th>
                   <th className="text-right p-3">Efectivo</th>
                   <th className="text-right p-3">Tarjeta</th>
@@ -229,7 +230,8 @@ function Reportes() {
                     <td className="p-3 font-bold">{p.registros?.vehiculos?.placa}</td>
                     <td className="p-3 font-medium">${Number(p.monto).toLocaleString()}</td>
                     <td className="p-3 capitalize">{p.metodo_pago}</td>
-                    <td className="p-3">{new Date(p.created_at).toLocaleString()}</td>
+                    <td className="p-3">{p.registros?.fecha_entrada ? new Date(p.registros.fecha_entrada).toLocaleString('es-CO') : '-'}</td>
+                    <td className="p-3">{p.registros?.fecha_salida ? new Date(p.registros.fecha_salida).toLocaleString('es-CO') : '-'}</td>
                   </tr>
                 ))}
               </tbody>
